@@ -16,8 +16,10 @@ def hypothesisLogistic(X, coefficients, bias):
     # TODO: 3. This function should use matrix operations to push X through
     # the logistic regression unti and return the results
     coefficients = np.transpose(coefficients)
-    print(f'hypothesisLogistic|coefficients shape: {coefficients.shape}')
-    return X@coefficients + bias
+    print(f'hypothesisLogistic|coefficients new shape: {coefficients.shape}')
+    hypothesis = np.matmul(coefficients, X) + bias
+    print(f'hypothesisLogistic|hypothesis shape: {hypothesis.shape}')
+    return coefficients@X + bias
 
 
 def calculateCrossEntropyCost(predictedY, Y):
@@ -100,7 +102,7 @@ def logisticRegression(X_train, y_train, X_validation, y_validation):
 
 
     # TODO 2: Create a column vector of coefficients for the model 
-    coefficients = np.random.random((1, X_train.shape[1]))
+    coefficients = np.random.random((X_train.shape[1], 1))
     print(f'logisticRegression|coefficients shape: {coefficients.shape}')
     print(f'logisticRegression|coefficients type: {type(coefficients)}')
 
@@ -162,10 +164,10 @@ def main():
     # TODO: 1 Reshape the training data and test data so 
     # that the features becomes the rows of the matrix
     # Reshape train_set_x_orig
-    np.reshape(train_set_x_orig, (2304, 7919))
+    train_set_x_orig = np.reshape(train_set_x_orig, (train_set_x_orig.shape[1], train_set_x_orig.shape[0]))
     print(f'train_set_x_orig new shape: {train_set_x_orig.shape}')
     # Reshape val_set_x_orig
-    np.reshape(val_set_x_orig, (2304, 110))
+    val_set_x_orig = np.reshape(val_set_x_orig, (val_set_x_orig.shape[1], val_set_x_orig.shape[0]))
     print(f'val_set_x_orig new shape: {val_set_x_orig.shape}')
 
 
