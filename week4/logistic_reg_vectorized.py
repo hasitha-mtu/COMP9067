@@ -11,10 +11,13 @@ def logistic(x):
 
 
 def hypothesisLogistic(X, coefficients, bias):
-
-    # TODO: 3. This function should use matrix operations to push X through 
+    print(f'hypothesisLogistic|X shape: {X.shape}')
+    print(f'hypothesisLogistic|coefficients shape: {coefficients.shape}')
+    # TODO: 3. This function should use matrix operations to push X through
     # the logistic regression unti and return the results
-    return 0
+    coefficients = np.transpose(coefficients)
+    print(f'hypothesisLogistic|coefficients shape: {coefficients.shape}')
+    return X@coefficients + bias
 
 
 def calculateCrossEntropyCost(predictedY, Y):
@@ -24,7 +27,8 @@ def calculateCrossEntropyCost(predictedY, Y):
 
 
 def gradient_descent_log(bias, coefficients, alpha, X, Y, max_iter, X_val, y_val):
-
+    print(f'gradient_descent_log|X shape: {X.shape}')
+    print(f'gradient_descent_log|Y shape: {Y.shape}')
     m = X.shape[1]
 
     # array is used to store change in cost function for each iteration of GD
@@ -38,12 +42,16 @@ def gradient_descent_log(bias, coefficients, alpha, X, Y, max_iter, X_val, y_val
 
         # Calculate predicted y values for current coefficient and bias values 
         predictedY = hypothesisLogistic(X, coefficients, bias)
+        print(f'gradient_descent_log|predictedY shape: {predictedY.shape}')
+        E = Y - predictedY
+        print(f'gradient_descent_log|E shape: {E.shape}')
 
         # TODO: 4. Calculate gradients for coefficients and bias
-
+        d_lamda = (E@X)/m
+        print(f'gradient_descent_log|d_lamda shape: {d_lamda.shape}')
 
         # TODO: 5. Execute gradient descent update rule 
-
+        coefficients = coefficients - alpha*d_lamda
 
         if num %10 == 0:
             print ("Iteration Number ", num)
@@ -92,7 +100,9 @@ def logisticRegression(X_train, y_train, X_validation, y_validation):
 
 
     # TODO 2: Create a column vector of coefficients for the model 
-    coefficients = 0
+    coefficients = np.random.random((1, X_train.shape[1]))
+    print(f'logisticRegression|coefficients shape: {coefficients.shape}')
+    print(f'logisticRegression|coefficients type: {type(coefficients)}')
 
     bias = 0.0
 
@@ -116,7 +126,8 @@ def logisticRegression(X_train, y_train, X_validation, y_validation):
 
 def main():
 
-    df =pd.read_csv('data/train.csv', sep=',' ,header=None)
+    df = pd.read_csv('data/train.csv', sep=',' ,header=None)
+    print(f'df shape: {df.shape}')
     trainData = df.values
 
     train_set_x_orig = trainData[:, 0:-1]
@@ -141,11 +152,21 @@ def main():
     train_set_y = train_set_y.reshape((1 ,len(train_set_y)))
     val_set_y = val_set_y.reshape((1 ,len(val_set_y)))
 
+    print(f'train_set_x_orig shape: {train_set_x_orig.shape}')
+    print(f'train_set_x_orig type: {type(train_set_x_orig)}')
+    print(f'train_set_y shape: {train_set_y.shape}')
+    print(f'val_set_x_orig shape: {val_set_x_orig.shape}')
+    print(f'val_set_x_orig type: {type(val_set_x_orig)}')
+    print(f'val_set_y shape: {val_set_y.shape}')
 
     # TODO: 1 Reshape the training data and test data so 
     # that the features becomes the rows of the matrix
     # Reshape train_set_x_orig
-    # Reshape val_set_x_orig 
+    np.reshape(train_set_x_orig, (2304, 7919))
+    print(f'train_set_x_orig new shape: {train_set_x_orig.shape}')
+    # Reshape val_set_x_orig
+    np.reshape(val_set_x_orig, (2304, 110))
+    print(f'val_set_x_orig new shape: {val_set_x_orig.shape}')
 
 
     logisticRegression(train_set_x_orig, train_set_y, val_set_x_orig, val_set_y)
